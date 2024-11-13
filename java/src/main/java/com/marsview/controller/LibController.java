@@ -7,8 +7,8 @@ import com.marsview.controller.basic.BasicController;
 import com.marsview.controller.basic.Builder;
 import com.marsview.controller.basic.ResultResponse;
 import com.marsview.domain.Lib;
-import com.marsview.domain.Users;
 import com.marsview.dto.LibDto;
+import com.marsview.dto.UsersDto;
 import com.marsview.service.LibService;
 import com.marsview.util.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,7 +48,7 @@ public class LibController extends BasicController {
      */
     @GetMapping("list")
     public ResultResponse list(HttpServletRequest request, int pageNum, int pageSize, String keyword, int type) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         QueryWrapper<Lib> queryWrapper = new QueryWrapper<>();
 
         if (StringUtils.hasText(keyword)) {
@@ -105,10 +105,10 @@ public class LibController extends BasicController {
      */
     @PostMapping("create")
     public ResultResponse create(HttpServletRequest request, @RequestBody Lib lib) {
-        Users users = SessionUtils.getUser(request);
-        lib.setCreatedAt(new Date());
-        lib.setUserId(users.getId());
-        lib.setUserName(users.getUserName());
+        UsersDto users = SessionUtils.getUser(request);
+        lib.setCreated_at(new Date());
+        lib.setUser_id(users.getId());
+        lib.setUser_name(users.getUserName());
         return getUpdateResponse(libService.save(lib), "创建失败");
     }
 

@@ -4,22 +4,18 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.marsview.controller.basic.BasicController;
+import com.marsview.controller.basic.Builder;
 import com.marsview.controller.basic.ResultResponse;
 import com.marsview.domain.Pages;
 import com.marsview.domain.PagesPublish;
-import com.marsview.domain.Users;
-import com.marsview.controller.basic.BasicController;
-import com.marsview.controller.basic.Builder;
 import com.marsview.dto.PagesPublishDto;
+import com.marsview.dto.UsersDto;
 import com.marsview.service.PagesPublishService;
 import com.marsview.service.PagesService;
-import com.marsview.util.HtmlUtil;
+import com.marsview.util.ConvertEntityUtil;
 import com.marsview.util.SessionUtils;
-import com.marsview.mapper.PagesMapper;
-import com.marsview.mapper.PagesPublishMapper;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +52,7 @@ public class PublishController extends BasicController {
      */
     @PostMapping("create")
     public ResultResponse create(HttpServletRequest request, @RequestBody PagesPublishDto publishDto) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         Pages pages = pagesService.getById(publishDto.getPage_id());
         if (pages == null) {
             return getErrorResponse("页面不存在");
@@ -65,26 +61,26 @@ public class PublishController extends BasicController {
             queryWrapper.eq("page_id", publishDto.getPage_id());
             long count = pagesPublishService.count(queryWrapper);
             PagesPublish publish = new PagesPublish();
-            publish.setPageId(pages.getId());
-            publish.setPageName(pages.getName());
-            publish.setUserId(users.getId());
-            publish.setUserName(users.getUserName());
-            publish.setCreatedAt(new Date());
-            publish.setUpdatedAt(new Date());
+            publish.setPage_id(pages.getId());
+            publish.setPage_name(pages.getName());
+            publish.setUser_id(users.getId());
+            publish.setUser_name(users.getUserName());
+            publish.setCreated_at(new Date());
+            publish.setUpdated_at(new Date());
             publish.setVersion((count + 1) + "");
-            publish.setPageData(pages.getPageData());
+            publish.setPage_data(pages.getPage_data());
             boolean result = pagesPublishService.save(publish);
             if (result) {
                 //更新页面信息
                 Pages pagesNew = new Pages();
                 BeanUtils.copyProperties(pages, pagesNew);
-                pagesNew.setStgPublishId(StringUtils.equals("stg", publishDto.getEnv()) ? publish.getId() : null);
-                pagesNew.setStgState(StringUtils.equals("stg", publishDto.getEnv()) ? 3 : null);
-                pagesNew.setPrePublishId(StringUtils.equals("pre", publishDto.getEnv()) ? publish.getId() : null);
-                pagesNew.setPreState(StringUtils.equals("pre", publishDto.getEnv()) ? 3 : null);
-                pagesNew.setPrdPublishId(StringUtils.equals("prd", publishDto.getEnv()) ? publish.getId() : null);
-                pagesNew.setPrdState(StringUtils.equals("prd", publishDto.getEnv()) ? 3 : null);
-                pagesNew.setPreviewImg(publishDto.getPreview_img());
+                pagesNew.setStg_publish_id(StringUtils.equals("stg", publishDto.getEnv()) ? publish.getId() : null);
+                pagesNew.setStg_state(StringUtils.equals("stg", publishDto.getEnv()) ? 3 : null);
+                pagesNew.setPre_publish_id(StringUtils.equals("pre", publishDto.getEnv()) ? publish.getId() : null);
+                pagesNew.setPre_state(StringUtils.equals("pre", publishDto.getEnv()) ? 3 : null);
+                pagesNew.setPrd_publish_id(StringUtils.equals("prd", publishDto.getEnv()) ? publish.getId() : null);
+                pagesNew.setPrd_state(StringUtils.equals("prd", publishDto.getEnv()) ? 3 : null);
+                pagesNew.setPreview_img(publishDto.getPreview_img());
                 pagesService.updateById(pagesNew);
 
             }
@@ -123,7 +119,7 @@ public class PublishController extends BasicController {
         List<PagesPublish> records = pageInfo.getRecords();
         List<PagesPublishDto> pagesPublishDtos = new ArrayList<>(records.size());
         for (PagesPublish record : records) {
-            pagesPublishDtos.add(new PagesPublishDto(record));
+            pagesPublishDtos.add(ConvertEntityUtil.ConvertToDto(record, PagesPublishDto.class));
         }
         return Builder.of(ResultResponse::new)
                 .with(ResultResponse::setData, Map.of(

@@ -9,7 +9,9 @@ import com.marsview.controller.basic.ResultResponse;
 import com.marsview.domain.ImgCloud;
 import com.marsview.domain.Users;
 import com.marsview.dto.ImgCloudDto;
-import com.marsview.service.ImgcloudService;
+import com.marsview.dto.UsersDto;
+import com.marsview.service.ImgCloudService;
+import com.marsview.util.ConvertEntityUtil;
 import com.marsview.util.SessionUtils;
 import com.marsview.util.storage.QiniuStorage;
 import com.zhouzifei.tool.config.SimpleFsProperties;
@@ -26,7 +28,7 @@ import java.util.Map;
 @RequestMapping("/api/cloud")
 public class ImgCloudController extends BasicController {
     @Autowired
-    private ImgcloudService imgcloudService;
+    private ImgCloudService imgcloudService;
 
     @Autowired
     private SimpleFsProperties simpleFsProperties;
@@ -38,16 +40,16 @@ public class ImgCloudController extends BasicController {
      **/
     @PostMapping("/upload/files")
     public ResultResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         Long userId = users.getId();
         String userName = users.getUserName();
 
         String url = QiniuStorage.uploadFile(simpleFsProperties, file);
         ImgCloud imgCloud = new ImgCloud();
-        imgCloud.setUserId(userId);
-        imgCloud.setUserName(userName);
-        imgCloud.setOriginName(file.getOriginalFilename());
-        imgCloud.setFileName(file.getOriginalFilename());
+        imgCloud.setUser_id(userId);
+        imgCloud.setUser_name(userName);
+        imgCloud.setOrigin_name(file.getOriginalFilename());
+        imgCloud.setFile_name(file.getOriginalFilename());
         imgCloud.setType(file.getContentType());
         imgCloud.setSize(Long.valueOf(file.getSize()).intValue());
         imgCloud.setUrl(url);
@@ -67,7 +69,7 @@ public class ImgCloudController extends BasicController {
         List<ImgCloud> imgClouds = pageInfo.getRecords();
         List<ImgCloudDto> imgCloudDtos = new ArrayList<>(imgClouds.size());
         for (ImgCloud imgCloud : imgClouds) {
-            imgCloudDtos.add(new ImgCloudDto(imgCloud));
+            imgCloudDtos.add(ConvertEntityUtil.ConvertToDto(imgCloud, ImgCloudDto.class));
         }
         return Builder.of(ResultResponse::new)
                 .with(ResultResponse::setData, Map.of(

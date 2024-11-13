@@ -1,21 +1,17 @@
 package com.marsview.controller;
 
-import com.alibaba.druid.util.StringUtils;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.marsview.controller.basic.ResultResponse;
-import com.marsview.domain.Pages;
-import com.marsview.domain.Roles;
-import com.marsview.domain.Users;
 import com.marsview.controller.basic.BasicController;
 import com.marsview.controller.basic.Builder;
+import com.marsview.controller.basic.ResultResponse;
+import com.marsview.domain.Roles;
 import com.marsview.dto.RolesDto;
+import com.marsview.dto.UsersDto;
 import com.marsview.service.RolesService;
-import com.marsview.util.HtmlUtil;
 import com.marsview.util.SessionUtils;
-import com.marsview.mapper.RolesMapper;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
@@ -47,16 +43,16 @@ public class RoleController extends BasicController {
      */
     @PostMapping("create")
     public ResultResponse create(HttpServletRequest request, @RequestBody RolesDto rolesDto) {
-        if (StringUtils.isEmpty(rolesDto.getProject_id())) {
+        if (ObjectUtil.isEmpty(rolesDto.getProject_id())) {
             return getErrorResponse("项目id不能为空");
         }
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         Roles roles = new Roles();
         BeanUtils.copyProperties(rolesDto, roles);
-        roles.setUserId(users.getId());
-        roles.setUserName(users.getUserName());
-        roles.setCreatedAt(new Date());
-        roles.setProjectId(Long.parseLong(rolesDto.getProject_id()));
+        roles.setUser_id(users.getId());
+        roles.setUser_name(users.getUserName());
+        roles.setCreated_at(new Date());
+        roles.setProject_id(rolesDto.getProject_id());
         return getUpdateResponse(rolesService.save(roles), "新增失败");
     }
 
@@ -119,7 +115,7 @@ public class RoleController extends BasicController {
      */
     @PostMapping("updateLimits")
     public ResultResponse updateLimits(HttpServletResponse response, @RequestBody Roles roles) {
-        roles.setUpdatedAt(new Date());
+        roles.setUpdated_at(new Date());
         return getUpdateResponse(rolesService.updateById(roles), "设置失败");
     }
 

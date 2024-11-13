@@ -6,7 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.marsview.controller.basic.BasicController;
 import com.marsview.controller.basic.Builder;
 import com.marsview.controller.basic.ResultResponse;
-import com.marsview.domain.*;
+import com.marsview.domain.Menu;
+import com.marsview.domain.Pages;
+import com.marsview.domain.PagesPublish;
+import com.marsview.domain.Projects;
+import com.marsview.dto.UsersDto;
 import com.marsview.service.MenuService;
 import com.marsview.service.PagesPublishService;
 import com.marsview.service.PagesService;
@@ -84,7 +88,7 @@ public class AdminController extends BasicController {
   @GetMapping("page/detail/{env}/{page_id}")
   public ResultResponse pageDetail(HttpServletRequest request, HttpServletResponse response, @PathVariable(name = "env") String env, @PathVariable(name = "page_id") Long page_id) {
     LOGGER.info("请求参数env[{}],page_id[{}]", env, page_id);
-    Users users = SessionUtils.getUser(request);
+    UsersDto users = SessionUtils.getUser(request);
 
     Pages pages = pagesService.getById(page_id);
     if (pages == null) {
@@ -93,13 +97,13 @@ public class AdminController extends BasicController {
     Long last_publish_id = null;
     switch (env) {
       case "pre":
-        last_publish_id = pages.getPrePublishId();
+        last_publish_id = pages.getPre_publish_id();
         break;
       case "stg":
-        last_publish_id = pages.getStgPublishId();
+        last_publish_id = pages.getStg_publish_id();
         break;
       case "prd":
-        last_publish_id = pages.getPrdPublishId();
+        last_publish_id = pages.getPrd_publish_id();
         break;
       default:
         return getErrorResponse("环境参数错误");
@@ -123,7 +127,7 @@ public class AdminController extends BasicController {
    */
   @GetMapping("project/list")
   public ResultResponse projectList(HttpServletRequest request, HttpServletResponse response, int pageNum, int pageSize) {
-    Users users = SessionUtils.getUser(request);
+    UsersDto users = SessionUtils.getUser(request);
     QueryWrapper<Projects> queryWrapper = new QueryWrapper<>();
     queryWrapper.eq("user_id", users.getId());
 

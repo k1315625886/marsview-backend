@@ -3,16 +3,11 @@ package com.marsview.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.marsview.controller.basic.ResultResponse;
-import com.marsview.domain.ProjectUser;
 import com.marsview.controller.basic.BasicController;
 import com.marsview.controller.basic.Builder;
-import com.marsview.domain.Projects;
+import com.marsview.controller.basic.ResultResponse;
+import com.marsview.domain.ProjectUser;
 import com.marsview.service.ProjectUserService;
-import com.marsview.service.ProjectsService;
-import com.marsview.util.HtmlUtil;
-import com.marsview.mapper.ProjectUserMapper;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,12 +37,12 @@ public class ProjectUserController extends BasicController {
     @PostMapping("create")
     public ResultResponse create(HttpServletResponse response, @RequestBody ProjectUser projectUser) {
         QueryWrapper<ProjectUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("project_id", projectUser.getProjectId());
-        queryWrapper.eq("user_id", projectUser.getUserId());
+        queryWrapper.eq("project_id", projectUser.getProject_id());
+        queryWrapper.eq("user_id", projectUser.getUser_id());
         if (projectUserService.count(queryWrapper) > 0) {
             return getErrorResponse("该用户已存在");
         } else {
-            projectUser.setCreatedAt(new Date());
+            projectUser.setCreated_at(new Date());
             return getUpdateResponse(projectUserService.save(projectUser), "新增失败");
         }
     }

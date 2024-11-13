@@ -8,11 +8,13 @@ import com.marsview.controller.basic.Builder;
 import com.marsview.controller.basic.ResultResponse;
 import com.marsview.domain.Menu;
 import com.marsview.domain.Pages;
-import com.marsview.domain.Users;
+import com.marsview.dto.MenuDto;
 import com.marsview.dto.PagesDto;
+import com.marsview.dto.UsersDto;
 import com.marsview.mapper.RolesMapper;
 import com.marsview.service.MenuService;
 import com.marsview.service.PagesService;
+import com.marsview.util.ConvertEntityUtil;
 import com.marsview.util.SessionUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,10 +57,10 @@ public class PageController extends BasicController {
      */
     @PostMapping("create")
     public ResultResponse create(HttpServletRequest request, HttpServletResponse response, @RequestBody Pages pages) {
-        Users users = SessionUtils.getUser(request);
-        pages.setUserId(users.getId());
-        pages.setUserName(users.getUserName());
-        pages.setCreatedAt(new Date());
+        UsersDto users = SessionUtils.getUser(request);
+        pages.setUser_id(users.getId());
+        pages.setUser_name(users.getUserName());
+        pages.setCreated_at(new Date());
         return getUpdateResponse(pagesService.save(pages), "创建失败");
     }
 
@@ -73,7 +75,7 @@ public class PageController extends BasicController {
      */
     @GetMapping("list")
     public ResultResponse list(HttpServletRequest request, HttpServletResponse response, int pageNum, int pageSize, Integer type) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         QueryWrapper<Pages> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", users.getId());
         if (type != 0) {
@@ -85,7 +87,7 @@ public class PageController extends BasicController {
         List<Pages> records = pageInfo.getRecords();
         List<PagesDto> pagesDtos = new ArrayList<>(records.size());
         for (Pages record : records) {
-            pagesDtos.add(new PagesDto(record));
+            pagesDtos = ConvertEntityUtil.ConvertToDto(record, pagesDtos.getClass());
         }
         return Builder.of(ResultResponse::new)
                 .with(ResultResponse::setData, Map.of(
@@ -104,14 +106,14 @@ public class PageController extends BasicController {
      * @param menu
      */
     @PostMapping("/role/list")
-    public ResultResponse list(HttpServletRequest request, HttpServletResponse response, @RequestBody Menu menu) {
-        Users users = SessionUtils.getUser(request);
+    public ResultResponse list(HttpServletRequest request, HttpServletResponse response, @RequestBody MenuDto menu) {
+        UsersDto users = SessionUtils.getUser(request);
         QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", users.getId());
         if (menu != null) {
-            queryWrapper.eq("page_id", menu.getPageId());
+            queryWrapper.eq("page_id", menu.getPage_id());
         }
-        menu.setUserId(users.getId());
+        menu.setUser_id(users.getId());
         return getResponse(Map.of("list", menuService.list(queryWrapper)));
     }
 
@@ -124,7 +126,7 @@ public class PageController extends BasicController {
     @GetMapping("/detail/{page_id}")
     public ResultResponse detail(HttpServletRequest request, HttpServletResponse response,
                                  @PathVariable("page_id") Long page_id) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         QueryWrapper<Pages> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", users.getId());
         if (page_id == null) {
@@ -135,7 +137,7 @@ public class PageController extends BasicController {
         if (pages == null) {
             return getErrorResponse("页面不存在");
         }
-        return getResponse(new PagesDto(pages));
+        return getResponse(ConvertEntityUtil.ConvertToDto(pages, PagesDto.class));
     }
 
     /**
@@ -148,10 +150,10 @@ public class PageController extends BasicController {
     public ResultResponse update(HttpServletResponse response, @RequestBody PagesDto pagesDto) {
         Pages pages = new Pages();
         BeanUtils.copyProperties(pagesDto, pages);
-        pages.setUpdatedAt(new Date());
-        pages.setIsEdit(pagesDto.getIs_edit());
-        pages.setIsPublic(pagesDto.getIs_public());
-        pages.setPageData(pagesDto.getPage_data());
+        pages.setUpdated_at(new Date());
+        pages.setIs_edit(pagesDto.getIs_edit());
+        pages.setIs_public(pagesDto.getIs_public());
+        pages.setPage_data(pagesDto.getPage_data());
         return getUpdateResponse(pagesService.updateById(pages), "保存失败");
     }
 
@@ -166,12 +168,12 @@ public class PageController extends BasicController {
         return getUpdateResponse(
                 pagesService.updateById(Builder.of(Pages::new)
                         .with(Pages::setId, dto.getPage_id())
-                        .with(Pages::setStgPublishId, "stg".equals(dto.getEnv()) ? dto.getLast_publish_id() : null)
-                        .with(Pages::setStgState, "stg".equals(dto.getEnv()) ? 3 : null)
-                        .with(Pages::setPrePublishId, "pre".equals(dto.getEnv()) ? dto.getLast_publish_id() : null)
-                        .with(Pages::setPreState, "pre".equals(dto.getEnv()) ? 3 : null)
-                        .with(Pages::setPrdPublishId, "prd".equals(dto.getEnv()) ? dto.getLast_publish_id() : null)
-                        .with(Pages::setPrdState, "prd".equals(dto.getEnv()) ? 3 : null).build()) ? 1 : 0, "操作失败");
+                        .with(Pages::setStg_publish_id, "stg".equals(dto.getEnv()) ? dto.getLast_publish_id() : null)
+                        .with(Pages::setStg_state, "stg".equals(dto.getEnv()) ? 3 : null)
+                        .with(Pages::setPre_publish_id, "pre".equals(dto.getEnv()) ? dto.getLast_publish_id() : null)
+                        .with(Pages::setPre_state, "pre".equals(dto.getEnv()) ? 3 : null)
+                        .with(Pages::setPrd_publish_id, "prd".equals(dto.getEnv()) ? dto.getLast_publish_id() : null)
+                        .with(Pages::setPrd_state, "prd".equals(dto.getEnv()) ? 3 : null).build()) ? 1 : 0, "操作失败");
     }
 
     /**
@@ -190,7 +192,7 @@ public class PageController extends BasicController {
         List<Pages> records = pageInfo.getRecords();
         List<PagesDto> pagesDtos = new ArrayList<>(records.size());
         for (Pages record : records) {
-            pagesDtos.add(new PagesDto(record));
+            pagesDtos.add(ConvertEntityUtil.ConvertToDto(record, PagesDto.class));
         }
         return Builder.of(ResultResponse::new)
                 .with(ResultResponse::setData, Map.of(

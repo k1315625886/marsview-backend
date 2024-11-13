@@ -3,9 +3,7 @@ package com.marsview.controller;
 import com.marsview.controller.basic.BasicController;
 import com.marsview.controller.basic.Builder;
 import com.marsview.controller.basic.ResultResponse;
-import com.marsview.domain.ImgCloud;
-import com.marsview.domain.Users;
-import com.marsview.service.ImgcloudService;
+import com.marsview.dto.UsersDto;
 import com.marsview.util.SessionUtils;
 import com.marsview.util.storage.QiniuStorage;
 import com.zhouzifei.tool.config.SimpleFsProperties;
@@ -37,7 +35,7 @@ public class CommonController extends BasicController {
      **/
     @PostMapping("/upload/files")
     public ResultResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         Long userId = users.getId();
         String userName = users.getUserName();
 

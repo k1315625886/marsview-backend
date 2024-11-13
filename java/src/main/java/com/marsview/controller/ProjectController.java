@@ -8,8 +8,8 @@ import com.marsview.controller.basic.BasicController;
 import com.marsview.controller.basic.Builder;
 import com.marsview.controller.basic.ResultResponse;
 import com.marsview.domain.Projects;
-import com.marsview.domain.Users;
 import com.marsview.dto.ProjectsDto;
+import com.marsview.dto.UsersDto;
 import com.marsview.service.ProjectsService;
 import com.marsview.util.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +49,7 @@ public class ProjectController extends BasicController {
      */
     @GetMapping("list")
     public ResultResponse list(HttpServletRequest request, HttpServletResponse response, int type, int pageNum, int pageSize, String keyword) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         QueryWrapper<Projects> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", users.getId());
         if (StringUtils.hasText(keyword)) {
@@ -67,7 +67,7 @@ public class ProjectController extends BasicController {
                 .map(projects -> {
                     ProjectsDto dto = new ProjectsDto();
                     BeanUtils.copyProperties(projects, dto); // 使用 Apache Commons BeanUtils 进行属性复制
-                    dto.setIs_edit(projects.getUserId().longValue() == users.getId().longValue());
+                    dto.setIs_edit(projects.getUser_id().longValue() == users.getId().longValue());
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -90,22 +90,22 @@ public class ProjectController extends BasicController {
      */
     @PostMapping("create")
     public ResultResponse create(HttpServletRequest request, @RequestBody JSONObject projectsDto) {
-        Users users = SessionUtils.getUser(request);
+        UsersDto users = SessionUtils.getUser(request);
         Projects projects = new Projects();
-        projects.setCreatedAt(new Date());
-        projects.setUserId(users.getId());
-        projects.setUserName(users.getUserName());
+        projects.setCreated_at(new Date());
+        projects.setUser_id(users.getId());
+        projects.setUser_name(users.getUserName());
 
         projects.setBreadcrumb(projectsDto.getBoolean("breadcrumb") ? 1 : 0);
         projects.setFooter(projectsDto.getBoolean("footer") ? 1 : 0);
-        projects.setIsPublic(projectsDto.getInteger("is_public"));
+        projects.setIs_public(projectsDto.getInteger("is_public"));
         projects.setLayout(projectsDto.getInteger("layout"));
         projects.setLogo(projectsDto.getString("logo"));
-        projects.setMenuMode(projectsDto.getString("menu_mode"));
-        projects.setMenuThemeColor(projectsDto.getString("menu_theme_color"));
+        projects.setMenu_mode(projectsDto.getString("menu_mode"));
+        projects.setMenu_theme_color(projectsDto.getString("menu_theme_color"));
         projects.setName(projectsDto.getString("name"));
         projects.setRemark(projectsDto.getString("remark"));
-        projects.setSystemThemeColor(projectsDto.getString("system_theme_color"));
+        projects.setSystem_theme_color(projectsDto.getString("system_theme_color"));
         projects.setTag(projectsDto.getBoolean("tag") ? 1 : 0);
         return getUpdateResponse(projectsService.save(projects), "项目创建失败");
     }
@@ -129,7 +129,7 @@ public class ProjectController extends BasicController {
      */
     @PostMapping("update")
     public ResultResponse update(HttpServletResponse response, @RequestBody Projects projects) {
-        projects.setUpdatedAt(new Date());
+        projects.setUpdated_at(new Date());
         return getUpdateResponse(projectsService.updateById(projects), "保存失败");
     }
 

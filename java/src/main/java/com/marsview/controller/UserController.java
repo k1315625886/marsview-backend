@@ -8,6 +8,7 @@ import com.marsview.controller.basic.ResultResponse;
 import com.marsview.domain.Users;
 import com.marsview.dto.UsersDto;
 import com.marsview.service.UsersService;
+import com.marsview.util.ConvertEntityUtil;
 import com.marsview.util.Md5Utils;
 import com.marsview.util.SessionUtils;
 import jakarta.annotation.Resource;
@@ -57,17 +58,18 @@ public class UserController extends BasicController {
     //判断验证码是否正确
     if (StringUtils.equals(dto.getCode(), code)) {
       Users users = new Users();
-      users.setUserPwd(dto.getUserPwd());
-      users.setUserName(dto.getUserName());
-      users.setCreatedAt(new Date());
+      users.setUser_pwd(dto.getUserPwd());
+      users.setUser_name(dto.getUserName());
+      users.setCreated_at(new Date());
 
       boolean result = userService.save(users);
       if (result) {
-        SessionUtils.setUser(request, users);
+        dto = ConvertEntityUtil.ConvertToDto(users, UsersDto.class);
+        SessionUtils.setUser(request, dto);
         return getResponse(
           Map.of("userId", users.getId(),
-            "userName", users.getUserName(),
-            "token", Md5Utils.getMd5(users.getId() + users.getUserName() + users.getUserPwd())
+            "userName", users.getUser_name(),
+            "token", Md5Utils.getMd5(users.getId() + users.getUser_name() + users.getUser_pwd())
           ));
       } else {
         return getErrorResponse("注册失败");
@@ -119,12 +121,13 @@ public class UserController extends BasicController {
     wrapper.eq("user_pwd", dto.getUserPwd());
     Users users = userService.getOne(wrapper);
     if (users != null) {
-      SessionUtils.setUser(request, users);
-      SessionUtils.setUser(request, users);
+      dto = ConvertEntityUtil.ConvertToDto(users, UsersDto.class);
+      SessionUtils.setUser(request, dto);
+      SessionUtils.setUser(request, dto);
       return getResponse(
         Map.of("userId", users.getId(),
-          "userName", users.getUserName(),
-          "token", Md5Utils.getMd5(users.getId() + users.getUserName() + users.getUserPwd())
+          "userName", users.getUser_name(),
+          "token", Md5Utils.getMd5(users.getId() + users.getUser_name() + users.getUser_pwd())
         ));
     } else {
       return getErrorResponse("用户名或密码错误");
@@ -138,7 +141,7 @@ public class UserController extends BasicController {
    */
   @GetMapping("info")
   public ResultResponse info(HttpServletRequest request, HttpServletResponse response) {
-    Users users = SessionUtils.getUser(request);
+    UsersDto users = SessionUtils.getUser(request);
     return getResponse(
       Map.of("userId", users.getId(),
         "userName", users.getUserName(),
@@ -157,8 +160,8 @@ public class UserController extends BasicController {
     if (users.getId() != null) {
       wrapper.eq("id", users.getId());
     }
-    if (users.getUserName() != null) {
-      wrapper.eq("user_name", users.getUserName());
+    if (users.getUser_name() != null) {
+      wrapper.eq("user_name", users.getUser_name());
     }
     return getResponse(userService.list(wrapper));
   }
