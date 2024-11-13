@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.marsview.mapper.PagesPublishMapper">
-
-    <resultMap id="BaseResultMap" type="com.marsview.domain.PagesPublish">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="pageId" column="page_id" jdbcType="BIGINT"/>
-            <result property="pageName" column="page_name" jdbcType="VARCHAR"/>
-            <result property="pageData" column="page_data" jdbcType="VARCHAR"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
-            <result property="version" column="version" jdbcType="VARCHAR"/>
-            <result property="env" column="env" jdbcType="OTHER"/>
-            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
-            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
-    </resultMap>
-
-    <sql id="Base_Column_List">
-        id,page_id,page_name,
-        page_data,user_id,user_name,
-        version,env,updated_at,
-        created_at
-    </sql>
+  <resultMap id="BaseResultMap" type="com.marsview.domain.PagesPublish">
+    <!--@mbg.generated-->
+    <!--@Table pages_publish-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="page_id" jdbcType="BIGINT" property="page_id" />
+    <result column="page_name" jdbcType="VARCHAR" property="page_name" />
+    <result column="page_data" jdbcType="LONGVARCHAR" property="page_data" />
+    <result column="user_id" jdbcType="INTEGER" property="user_id" />
+    <result column="user_name" jdbcType="VARCHAR" property="user_name" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="env" jdbcType="VARCHAR" property="env" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updated_at" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="created_at" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, page_id, page_name, page_data, user_id, user_name, version, env, updated_at, 
+    created_at
+  </sql>
 </mapper>

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-11-01 10:35:15
 * @Entity com.marsview.domain.Imgcloud
 */
-public interface ImgcloudMapper extends BaseMapper<ImgCloud> {
+public interface ImgCloudMapper extends BaseMapper<ImgCloud> {
 
 }
 

@@ -1,13 +1,12 @@
 package com.marsview.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.marsview.mapper.ProjectsMapper;
 import com.marsview.domain.Projects;
-
-/**
-* @author yangshare
-* @description 针对表【projects(项目列表)】的数据库操作Service
-* @createDate 2024-11-01 10:35:15
-*/
-public interface ProjectsService extends IService<Projects> {
+@Service
+public class ProjectsService extends ServiceImpl<ProjectsMapper, Projects> {
 
 }

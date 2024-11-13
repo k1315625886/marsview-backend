@@ -1,13 +1,12 @@
 package com.marsview.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.marsview.domain.LibPublish;
-import com.baomidou.mybatisplus.extension.service.IService;
-
-/**
-* @author yangshare
-* @description 针对表【lib_publish(组件库发布表)】的数据库操作Service
-* @createDate 2024-11-01 10:35:15
-*/
-public interface LibPublishService extends IService<LibPublish> {
+import com.marsview.mapper.LibPublishMapper;
+@Service
+public class LibPublishService extends ServiceImpl<LibPublishMapper, LibPublish> {
 
 }

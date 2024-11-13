@@ -9,43 +9,49 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 用户列表
+ * 工作流模板配置
  */
 @Data
-@TableName(value = "project_user")
-public class ProjectUser implements Serializable {
+@TableName(value = "workflows")
+public class Workflows implements Serializable {
     /**
-     * id
+     * 主键ID
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
-     * 系统角色：1：管理员 2：普通用户
+     * 表单名称
      */
-    @TableField(value = "system_role")
-    private Integer system_role;
+    @TableField(value = "form_name")
+    private String form_name;
 
     /**
-     * 项目ID
+     * 表单描述
      */
-    @TableField(value = "project_id")
-    private Long project_id;
+    @TableField(value = "form_desc")
+    private String form_desc;
 
     /**
-     * 项目角色ID
+     * 配置页面ID
      */
-    @TableField(value = "role_id")
-    private Integer role_id;
+    @TableField(value = "page_id")
+    private Integer page_id;
 
     /**
-     * 通行证id
+     * 工作流配置数据
+     */
+    @TableField(value = "template_data")
+    private String template_data;
+
+    /**
+     * 用户ID
      */
     @TableField(value = "user_id")
     private Long user_id;
 
     /**
-     * 姓名
+     * 用户名
      */
     @TableField(value = "user_name")
     private String user_name;

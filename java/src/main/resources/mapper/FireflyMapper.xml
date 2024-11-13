@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.marsview.mapper.FireflyMapper">
-
-    <resultMap id="BaseResultMap" type="com.marsview.domain.Firefly">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="VARCHAR"/>
-            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
-            <result property="time" column="time" jdbcType="SMALLINT"/>
-            <result property="skill" column="skill" jdbcType="VARCHAR"/>
-            <result property="sales" column="sales" jdbcType="FLOAT"/>
-            <result property="area" column="area" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
-            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
-    </resultMap>
-
-    <sql id="Base_Column_List">
-        id,name,type,
-        avatar,time,skill,
-        sales,area,status,
-        updated_at,created_at
-    </sql>
+  <resultMap id="BaseResultMap" type="com.marsview.domain.Firefly">
+    <!--@mbg.generated-->
+    <!--@Table firefly-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="time" jdbcType="SMALLINT" property="time" />
+    <result column="skill" jdbcType="VARCHAR" property="skill" />
+    <result column="sales" jdbcType="FLOAT" property="sales" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updated_at" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="created_at" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, `type`, avatar, `time`, skill, sales, area, `status`, updated_at, created_at
+  </sql>
 </mapper>

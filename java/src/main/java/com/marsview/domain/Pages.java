@@ -4,191 +4,124 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 项目列表
- * @TableName pages
  */
-@TableName(value ="pages")
 @Data
+@TableName(value = "pages")
 public class Pages implements Serializable {
     /**
      * 项目ID
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 项目名称
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
      * 用户ID
      */
-    private Long userId;
+    @TableField(value = "user_id")
+    private Long user_id;
 
     /**
      * 用户名
      */
-    private String userName;
+    @TableField(value = "user_name")
+    private String user_name;
 
     /**
      * 页面数据
      */
-    private String pageData;
+    @TableField(value = "page_data")
+    private String page_data;
 
     /**
      * 页面描述
      */
+    @TableField(value = "remark")
     private String remark;
 
     /**
-     * 是否开放 1-我的 2-市场
+     * 是否开放 1-公开 2-私有
      */
-    private Integer isPublic;
+    @TableField(value = "is_public")
+    private Integer is_public;
 
     /**
      * 是否可编辑 1-编辑 2-只读
      */
-    private Integer isEdit;
+    @TableField(value = "is_edit")
+    private Integer is_edit;
 
     /**
      * 页面预览图
      */
-    private String previewImg;
+    @TableField(value = "preview_img")
+    private String preview_img;
 
     /**
      * stg 页面发布ID
      */
-    private Long stgPublishId;
+    @TableField(value = "stg_publish_id")
+    private Long stg_publish_id;
 
     /**
      * pre 页面发布ID
      */
-    private Long prePublishId;
+    @TableField(value = "pre_publish_id")
+    private Long pre_publish_id;
 
     /**
      * prd 页面发布ID
      */
-    private Long prdPublishId;
+    @TableField(value = "prd_publish_id")
+    private Long prd_publish_id;
 
     /**
      * 发布状态：1未保存 2已保存 3已发布
      */
-    private Integer stgState;
+    @TableField(value = "stg_state")
+    private Integer stg_state;
 
     /**
      * 发布状态：1未保存 2已保存 3已发布
      */
-    private Integer preState;
+    @TableField(value = "pre_state")
+    private Integer pre_state;
 
     /**
      * 发布状态：1未保存 2已保存 3已发布
      */
-    private Integer prdState;
+    @TableField(value = "prd_state")
+    private Integer prd_state;
+
+    /**
+     * 所属项目ID
+     */
+    @TableField(value = "project_id")
+    private Long project_id;
 
     /**
      * 更新时间
      */
-    private Date updatedAt;
+    @TableField(value = "updated_at")
+    private Date updated_at;
 
     /**
      * 创建时间
      */
-    private Date createdAt;
+    @TableField(value = "created_at")
+    private Date created_at;
 
-    /**
-     * 项目ID
-     */
-    private Long projectId;
-
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Pages other = (Pages) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-            && (this.getPageData() == null ? other.getPageData() == null : this.getPageData().equals(other.getPageData()))
-            && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
-            && (this.getIsPublic() == null ? other.getIsPublic() == null : this.getIsPublic().equals(other.getIsPublic()))
-            && (this.getIsEdit() == null ? other.getIsEdit() == null : this.getIsEdit().equals(other.getIsEdit()))
-            && (this.getPreviewImg() == null ? other.getPreviewImg() == null : this.getPreviewImg().equals(other.getPreviewImg()))
-            && (this.getStgPublishId() == null ? other.getStgPublishId() == null : this.getStgPublishId().equals(other.getStgPublishId()))
-            && (this.getPrePublishId() == null ? other.getPrePublishId() == null : this.getPrePublishId().equals(other.getPrePublishId()))
-            && (this.getPrdPublishId() == null ? other.getPrdPublishId() == null : this.getPrdPublishId().equals(other.getPrdPublishId()))
-            && (this.getStgState() == null ? other.getStgState() == null : this.getStgState().equals(other.getStgState()))
-            && (this.getPreState() == null ? other.getPreState() == null : this.getPreState().equals(other.getPreState()))
-            && (this.getPrdState() == null ? other.getPrdState() == null : this.getPrdState().equals(other.getPrdState()))
-            && (this.getUpdatedAt() == null ? other.getUpdatedAt() == null : this.getUpdatedAt().equals(other.getUpdatedAt()))
-            && (this.getCreatedAt() == null ? other.getCreatedAt() == null : this.getCreatedAt().equals(other.getCreatedAt()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
-        result = prime * result + ((getPageData() == null) ? 0 : getPageData().hashCode());
-        result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
-        result = prime * result + ((getIsPublic() == null) ? 0 : getIsPublic().hashCode());
-        result = prime * result + ((getIsEdit() == null) ? 0 : getIsEdit().hashCode());
-        result = prime * result + ((getPreviewImg() == null) ? 0 : getPreviewImg().hashCode());
-        result = prime * result + ((getStgPublishId() == null) ? 0 : getStgPublishId().hashCode());
-        result = prime * result + ((getPrePublishId() == null) ? 0 : getPrePublishId().hashCode());
-        result = prime * result + ((getPrdPublishId() == null) ? 0 : getPrdPublishId().hashCode());
-        result = prime * result + ((getStgState() == null) ? 0 : getStgState().hashCode());
-        result = prime * result + ((getPreState() == null) ? 0 : getPreState().hashCode());
-        result = prime * result + ((getPrdState() == null) ? 0 : getPrdState().hashCode());
-        result = prime * result + ((getUpdatedAt() == null) ? 0 : getUpdatedAt().hashCode());
-        result = prime * result + ((getCreatedAt() == null) ? 0 : getCreatedAt().hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
-        sb.append(", pageData=").append(pageData);
-        sb.append(", remark=").append(remark);
-        sb.append(", isPublic=").append(isPublic);
-        sb.append(", isEdit=").append(isEdit);
-        sb.append(", previewImg=").append(previewImg);
-        sb.append(", stgPublishId=").append(stgPublishId);
-        sb.append(", prePublishId=").append(prePublishId);
-        sb.append(", prdPublishId=").append(prdPublishId);
-        sb.append(", stgState=").append(stgState);
-        sb.append(", preState=").append(preState);
-        sb.append(", prdState=").append(prdState);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
 }

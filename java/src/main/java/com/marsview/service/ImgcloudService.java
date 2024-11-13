@@ -1,13 +1,10 @@
 package com.marsview.service;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.marsview.mapper.ImgCloudMapper;
+import org.springframework.stereotype.Service;
 import com.marsview.domain.ImgCloud;
-import com.baomidou.mybatisplus.extension.service.IService;
-
-/**
-* @author yangshare
-* @description 针对表【imgcloud(图片云服务)】的数据库操作Service
-* @createDate 2024-11-01 10:35:15
-*/
-public interface ImgcloudService extends IService<ImgCloud> {
+@Service
+public class ImgCloudService extends ServiceImpl<ImgCloudMapper, ImgCloud> {
 
 }
